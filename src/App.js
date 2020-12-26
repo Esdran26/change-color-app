@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import ChangeColor from './components/ChangeColor';
+import { dataColors } from './data/dataColors';
+
+const App = () => {
+    const [color, setColor] = useState(
+        localStorage.getItem('color') || 'black'
+    );
+
+    const handleColor = id => {
+        return dataColors.find(element => {
+            setColor(element.color);
+            localStorage.setItem('color', element.color);
+            return element.id === id;
+        });
+    };
+
+    return (
+        <div className='container'>
+            <div
+                className='color-background'
+                style={{
+                    backgroundColor: color,
+                    transition: 'all .3s ease-in-out'
+                }}
+            >
+
+            </div>
+
+            <div className='text-background'>
+                <h1>Select the color</h1>
+                <br />
+                <br />
+
+                <ChangeColor 
+                    dataColors={ dataColors } 
+                    handleColor={ handleColor }
+                />
+            </div>
+        </div>
+    );
 }
 
 export default App;
